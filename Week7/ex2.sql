@@ -100,15 +100,14 @@ VALUES
 (4, 1, 4, '05/05/2010'),
 (4, 3, 1, '05/05/2010');
 
--- 1st query
+--Task 2.1
 SELECT _school.name AS school, _publisher.name AS publisher, COUNT(*) FROM loan as _loan
     JOIN teacher AS _teacher ON _teacher.id = _loan.teacherId
     JOIN school AS _school ON _school.id = _teacher.schoolId
     JOIN book AS _book ON _book.id = _loan.bookId
     JOIN publisher AS _publisher ON _publisher.id = _book.publisherId
 GROUP BY (_school.id, _publisher.id);
-
---2nd query
+--Task 2.2
 SELECT _school.name AS school, _book.name AS book, _teacher.name AS teacher FROM loan as _loan
     JOIN teacher AS _teacher ON _teacher.id = _loan.teacherId
     JOIN school AS _school ON _school.id = _teacher.schoolId

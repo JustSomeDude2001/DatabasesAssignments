@@ -8,7 +8,7 @@ DROP TABLE IF EXISTS room;
 DROP TABLE IF EXISTS school;
 DROP TABLE IF EXISTS course;
 
--- Create tables
+--Making NF3 Tables
 CREATE TABLE publisher (
     id serial NOT NULL PRIMARY KEY,
     name text NOT NULL

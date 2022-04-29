@@ -1,0 +1,37 @@
+//SUBTASK 1
+create (p1:Fighter{name:'Khabib Nurmagomedov',weight:155}),
+(p2:Fighter{name:'Rafael Dos Anjos',weight:155}),
+(p3:Fighter{name:'Neil Magny',weight:170}),
+(p4:Fighter{name:'Jon Jones',weight:205}),
+(p5:Fighter{name:'Daniel Cormier',weight:105}),
+(p6:Fighter{name:'Michael Bisping',weight:185}),
+(p7:Fighter{name:'Matt Hamill',weight:185}),
+(p8:Fighter{name:'Brandon Vera',weight:205}),
+(p9:Fighter{name:'Frank Mir',weight:230}),
+(p10:Fighter{name:'Brock Lesnar',weight:230}),
+(p11:Fighter{name:'Kelvin Gastelum',weight:185}),
+(p1)-[:beats]->(p2),
+(p2)-[:beats]->(p3),
+(p4)-[:beats]->(p5),
+(p6)-[:beats]->(p7),
+(p4)-[:beats]->(p8),
+(p8)-[:beats]->(p9),
+(p9)-[:beats]->(p10),
+(p3)-[:beats]->(p11),
+(p11)-[:beats]->(p6),
+(p6)-[:beats]->(p7),
+(p6)-[:beats]->(p11),
+(p7)-[:beats]->(p4);
+//SUBTASK 2
+MATCH (f:Fighter)-[r:beats]->() WITH f, COUNT(r) AS n_beats WHERE f.weight in [155, 170, 185] AND n_beats > 0 RETURN f
+
+MATCH (f1:Fighter)-[r1:beats]->(f2:Fighter),
+      (f2:Fighter)-[r2:beats]->(f1:Fighter) WITH f1, r2, COUNT (r1) AS beats_12, COUNT (r2) AS beats_21 WHERE beats_12 = 1 AND beats_21 = 1 RETURN *;
+      
+CALL {MATCH (khabib:Fighter { name:"Khabib Nurmagomedov"}) RETURN khabib} MATCH (f1:Fighter { name: "Khabib Nurmagomedov"})-[r:beats *2..]->(f2:Fighter) WHERE NOT EXISTS ((khabib)-[:beats]-(f2)) RETURN f2;
+
+MATCH (f1:Fighter) WHERE NOT EXISTS ((f1)<-[:beats]-(:Fighter)) RETURN f1;
+
+MATCH (f1:Fighter) WHERE NOT EXISTS ((f1)-[:beats]->(:Fighter)) RETURN f1;
+
+MATCH (f1:Fighter), (f1)-[r1:beats]->(:Fighter), (f1)<-[r2:beats]-(:Fighter) WITH f1, COUNT(r1) as n_wins, COUNT (r2) AS n_defeats SET f1.n_wins = n_wins, f1.n_defeats = n_defeats RETURN *;
